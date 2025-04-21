@@ -1,4 +1,4 @@
-from xai_components.base import InArg, OutArg, InCompArg, Component, xai_component, secret, chat
+from xai_components.base import InArg, OutArg, InCompArg, Component, xai_component, secret, chat, dynalist
 
 @xai_component
 class AllLiteralTypes(Component):
@@ -30,3 +30,21 @@ class AllLiteralTypes(Component):
         for data_type, value in data_types.items():
             print(data_type + ":")
             print(value)
+
+@xai_component
+class DynaportTester(Component):
+    """
+    Collects dynamic inputs for testing dynalist connections.
+
+    ##### inPorts:
+    - inputs (dynalist): List of input values to be collected.
+
+    ##### outPorts:
+    - collected (list): Outputs all collected values as a list.
+    """
+    inputs: InArg[dynalist]
+    collected: OutArg[list]
+
+    def execute(self, ctx) -> None:
+        self.collected.value = self.inputs.value
+        print(f"[DynaportCollector] Collected values: {self.collected.value}")
